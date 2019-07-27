@@ -1,7 +1,7 @@
-﻿//---------------Если сервер настроен ---------------
-//------------------Пишем в консоль------------------
-$ blockchain-wallet-service start --port 3000
-и пользуемся
+//----------------Если сервер настроен --------------
+//Пишем в консоль
+blockchain-wallet-service start --port 3000
+//и пользуемся
 
 //------------------настройка сервера----------------
 //---------------------Установка---------------------
@@ -25,11 +25,11 @@ sudo mysql_secure_installation
 mysql -u root -p
 password:
 
-//создаем бд `blockchain` 
+//создаем бд `blockchain`
 CREATE DATABASE `blockchain` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
 use blockchain;
-GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password'; 
+GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 exit;
 reboot
@@ -94,11 +94,11 @@ CREATE TABLE `blockchain`.`callback`  (
 
 //-----------настройка apache2 и .htaccess-----------
 
-/* настройка apache2 и .htaccess для сокращения ссылок */ 
+/* настройка apache2 и .htaccess для сокращения ссылок */
 /* (вместо domen/address.php domen/address) */
 /* подключаем модуль mod_rewrite */
 
-sudo a2enmod rewrite  
+sudo a2enmod rewrite
 sudo service apache2 restart
 
 //включаем поддержку файлов .htaccess
@@ -108,7 +108,7 @@ sudo nano /etc/apache2/sites-enabled/000-default.conf
 /* Ниже блока <VirtualHost *:80> */
 /* вставляем следующий код: */
 
-<Directory /var/www/html> 
+<Directory /var/www/html>
 Options Indexes FollowSymLinks MultiViews
 AllowOverride All
 Order allow,deny
@@ -132,13 +132,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ index.php [NC,L]
 
-/* 
+/*
 ^ начало строки
 $ конец строки
 . любой одиночный символ
 * ноль или N предшествующих символов (N > 0)
 ‘nocase|NC’ не учитывать регистр
-‘last|L’ последнее правило 
+‘last|L’ последнее правило
 */
 
 //Перекидываем php файлы в /var/www/html
