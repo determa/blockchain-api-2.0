@@ -1,9 +1,25 @@
-﻿//----------------Если сервер настроен --------------
-//Пишем в консоль
-blockchain-wallet-service start --port 3000
-//и пользуемся
+﻿# Blockchain Wallet API
 
-//------------------настройка сервера----------------
+## Содержание
+
+  * [Если сервер настроен](#Если-сервер-настроен)
+  * [Настройка сервера](#Настройка-сервера)
+  * [API Documentation](#api-documentation)
+  * [RPC API](#rpc)
+  * [Installation](#installation)
+  * [Troubleshooting](#troubleshooting)
+  * [Usage](#usage)
+  * [Development](#development)
+  * [Deployment](#deployment)
+
+
+## Если сервер настроен
+Пишем в консоль
+  1. screen -r blockchain-wallet
+  2. blockchain-wallet-service start --port 3000
+и пользуемся
+
+## Настройка сервера
 //---------------------Установка---------------------
 
 //-------------------Установка apache----------------
@@ -48,6 +64,7 @@ bind-address            = 0.0.0.0
 
 //сохраняем
 sudo apt-get install php-mysql
+
 sudo apt-get install phpmyadmin
 sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 sudo a2enconf phpmyadmin
