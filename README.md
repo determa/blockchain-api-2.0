@@ -27,20 +27,20 @@
 
 ## Установка apache
 Пишем в консоли. Я использовал ubuntu для работы сервера.
-1. sudo apt update
-2. sudo apt upgrade
-3. sudo apt install apache2
+1. `$ sudo apt update`
+2. `$ sudo apt upgrade`
+3. `$ sudo apt install apache2`
 
 Добавление сервера в автозагрузку
-1. sudo systemctl enable apache2
-2. sudo systemctl restart apache2
-3. sudo systemctl reload apache2
+1. `$ sudo systemctl enable apache2`
+2. `$ sudo systemctl restart apache2`
+3. `$ sudo systemctl reload apache2`
 
 ## Установка MySQL
 Устанавливаем MySQL.
-1. sudo apt install mysql-server
-2. sudo mysql_secure_installation
-3. mysql -u root -p
+1. `$ sudo apt install mysql-server`
+2. `$ sudo mysql_secure_installation`
+3. `$ mysql -u root -p`
 
 создаем бд `blockchain`
 * CREATE DATABASE `blockchain` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
@@ -50,9 +50,9 @@
 * GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
 * FLUSH PRIVILEGES;
 * exit;
-4. sudo apt install mysql-client
-Перезагружаем сервер
-5. reboot
+4. `$ sudo apt install mysql-client`
+
+5. Перезагружаем сервер `$ reboot`
 
 //-----------------------php------------------------
 
