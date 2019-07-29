@@ -1,4 +1,4 @@
-//----------------Если сервер настроен --------------
+﻿//----------------Если сервер настроен --------------
 //Пишем в консоль
 blockchain-wallet-service start --port 3000
 //и пользуемся
@@ -32,6 +32,7 @@ use blockchain;
 GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
 FLUSH PRIVILEGES;
 exit;
+sudo apt install mysql-client
 reboot
 
 //-----------------------php------------------------
@@ -46,9 +47,11 @@ sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 bind-address            = 0.0.0.0
 
 //сохраняем
-//Для обеспечения SSL-соединений нужно создать ключ и сертификат. MySQL предлагает команду, которая автоматически установит все необходимое.
-sudo mysql_ssl_rsa_setup --uid=mysql
-
+sudo apt-get install php-mysql
+sudo apt-get install phpmyadmin
+sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+sudo a2enconf phpmyadmin
+sudo /etc/init.d/apache2 reload
 //------------------node.js and npm------------------
 
 sudo apt install nodejs
