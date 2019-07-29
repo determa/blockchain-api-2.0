@@ -17,8 +17,8 @@
 Для использования этого API вам нужно будет запустить локальную службу, которая будет отвечать за управление Blockchain кошельком. Приложение взаимодействует с этой службой локально через вызовы HTTP API.
 
 Для этого пишем в консоль
-  1. screen -r blockchain-wallet
-  2. blockchain-wallet-service start --port 3000
+  1. `$ screen -r blockchain-wallet`
+  2. `$ blockchain-wallet-service start --port 3000`
 копируем php файлы в папку сайта и пользуемся
 
 
@@ -42,49 +42,53 @@
 2. `$ sudo mysql_secure_installation`
 3. `$ mysql -u root -p`
 
-создаем бд `blockchain`
-* CREATE DATABASE `blockchain` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+создаем бд blockchain
+* `mysql> CREATE DATABASE blockchain CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';`
 
-* use blockchain;
+* `mysql> use blockchain;`
 Создаем нового пользователя
-* GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
-* FLUSH PRIVILEGES;
-* exit;
-4. `$ sudo apt install mysql-client`
+* Создаем нового пользователя `mysql> GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';`
+* Обновляем права пользователя `mysql> FLUSH PRIVILEGES;`
+* `mysql> exit;`
 
+4. `$ sudo apt install mysql-client`
 5. Перезагружаем сервер `$ reboot`
 
-//-----------------------php------------------------
+## Установка PHP
 
-sudo apt-get install php
-sudo apt-get install libapache2-mod-php
-sudo apt-get install php-fpm
+1. `$ sudo apt-get install php`
+2. `$ sudo apt-get install libapache2-mod-php`
+3. `$ sudo apt-get install php-fpm`
 
-sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+4. Заходим в файл конфигурации `sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf`
 
-//В нем найдите параметр bind-address
-bind-address            = 0.0.0.0
+В нем найдите параметр bind-address и смените его на 
+`bind-address            = 0.0.0.0`
+Cохраняем.
 
-//сохраняем
-sudo apt-get install php-mysql
+Если не установился mysql, делаем следующие действия:
+1. `$ sudo apt-get install php-mysql`
 
-sudo apt-get install phpmyadmin
-sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
-sudo a2enconf phpmyadmin
-sudo /etc/init.d/apache2 reload
-//------------------node.js and npm------------------
+1. `$ sudo apt-get install phpmyadmin`
+2. `$ sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf`
+3. `$ sudo a2enconf phpmyadmin`
+4. `$ sudo /etc/init.d/apache2 reload`
+Мне помогло только установка phpMyAdnin чтобы заработал mysql
 
-sudo apt install nodejs
-sudo apt install npm
+## Установка nodejs и npm
 
-//---------------Blockchain Wallet API---------------
+1. `$ sudo apt install nodejs`
+2. `$ sudo apt install npm`
 
-npm install -g blockchain-wallet-service
-npm update -g blockchain-wallet-service
+## Установка Blockchain Wallet API
 
-//------------------------MySQL----------------------
+1. `$ npm install -g blockchain-wallet-service`
+2. `$ npm update -g blockchain-wallet-service`
 
-//создание таблиц
+## Создание таблиц MySQL
+
+Возможно таблицы будут меняться
+```MySQL
 CREATE TABLE `blockchain`.`address`  (
   `address_id` int(0) NOT NULL AUTO_INCREMENT,
   `newAddress` varchar(255) NULL,
@@ -112,7 +116,7 @@ CREATE TABLE `blockchain`.`callback`  (
   `id_user` varchar(255) NULL,
   PRIMARY KEY (`callback_id`)
 );
-
+```
 //--------------для работы через ссылки--------------
 
 //-----------настройка apache2 и .htaccess-----------
