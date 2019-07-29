@@ -1,7 +1,6 @@
 <?php  
 
 	require_once 'connection.php';
-
 	$mysqli = new mysqli("$ip_bd", "$name", "$pass"); // Подключение к MySQL
 	if (mysqli_connect_errno()) {
 	    printf("error connect data base: %s\n", mysqli_connect_error());
