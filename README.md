@@ -4,13 +4,11 @@
 
   * [Если сервер настроен](#Если-сервер-настроен)
   * [Настройка сервера](#Настройка-сервера)
-  * [Установка](#Установка)
-  * [RPC API](#rpc)
-  * [Installation](#installation)
-  * [Troubleshooting](#troubleshooting)
-  * [Usage](#usage)
-  * [Development](#development)
-  * [Deployment](#deployment)
+  * [Установка apache](#Установка-apache)
+  * [Установка MySQL](#Установка-MySQL)
+  * [Установка PHP](#Установка-PHP)
+  * [Установка nodejs и npm](#Установка-nodejs-и-npm)
+  * [Создание таблиц MySQL](#Создание-таблиц-MySQL)
 
 
 ## Если сервер настроен
@@ -19,13 +17,14 @@
 Для этого пишем в консоль
   1. `$ screen -r blockchain-wallet`
   2. `$ blockchain-wallet-service start --port 3000`
-копируем php файлы в папку сайта и пользуемся
-
+Копируем php файлы в папку сайта и пользуемся
+В файл `connection.php` вписываем данные от бд
+Файл `Blockchain.php` содержит несколько функций
 
 ## Настройка сервера
 Здесь будет описано как полностью установить и настроить сервер.
 
-## Установка apache
+### Установка apache
 Пишем в консоли. Я использовал ubuntu для работы сервера.
 1. `$ sudo apt update`
 2. `$ sudo apt upgrade`
@@ -36,13 +35,13 @@
 2. `$ sudo systemctl restart apache2`
 3. `$ sudo systemctl reload apache2`
 
-## Установка MySQL
+### Установка MySQL
 Устанавливаем MySQL.
 1. `$ sudo apt install mysql-server`
 2. `$ sudo mysql_secure_installation`
 3. `$ mysql -u root -p`
 
-создаем бд blockchain
+Создаем бд blockchain
 * `mysql> CREATE DATABASE blockchain CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';`
 
 * `mysql> use blockchain;`
@@ -54,7 +53,7 @@
 4. `$ sudo apt install mysql-client`
 5. Перезагружаем сервер `$ reboot`
 
-## Установка PHP
+### Установка PHP
 
 1. `$ sudo apt-get install php`
 2. `$ sudo apt-get install libapache2-mod-php`
@@ -73,19 +72,19 @@ Cохраняем.
 2. `$ sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf`
 3. `$ sudo a2enconf phpmyadmin`
 4. `$ sudo /etc/init.d/apache2 reload`
-Мне помогло только установка phpMyAdnin чтобы заработал mysql
+Мне помогла только установка phpMyAdnin чтобы заработал mysql
 
-## Установка nodejs и npm
+### Установка nodejs и npm
 
 1. `$ sudo apt install nodejs`
 2. `$ sudo apt install npm`
 
-## Установка Blockchain Wallet API
+### Установка Blockchain Wallet API
 
 1. `$ npm install -g blockchain-wallet-service`
 2. `$ npm update -g blockchain-wallet-service`
 
-## Создание таблиц MySQL
+### Создание таблиц MySQL
 
 Возможно таблицы будут меняться
 ```MySQL
@@ -117,56 +116,3 @@ CREATE TABLE `blockchain`.`callback`  (
   PRIMARY KEY (`callback_id`)
 );
 ```
-//--------------для работы через ссылки--------------
-
-//-----------настройка apache2 и .htaccess-----------
-
-/* настройка apache2 и .htaccess для сокращения ссылок */
-/* (вместо domen/address.php domen/address) */
-/* подключаем модуль mod_rewrite */
-
-sudo a2enmod rewrite
-sudo service apache2 restart
-
-//включаем поддержку файлов .htaccess
-
-sudo nano /etc/apache2/sites-enabled/000-default.conf
-
-/* Ниже блока <VirtualHost *:80> */
-/* вставляем следующий код: */
-
-<Directory /var/www/html>
-Options Indexes FollowSymLinks MultiViews
-AllowOverride All
-Order allow,deny
-allow from all
-</Directory>
-
-/* Где /var/www/html путь к сайту */
-/* Сохраняем файл и перезагружаем apache */
-
-sudo service apache2 restart
-
-/* Создание файла .htaccess */
-
-sudo nano /var/www/html/.htaccess
-
-/* вписываем туда код: */
-
-RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ index.php [NC,L]
-
-/*
-^ начало строки
-$ конец строки
-. любой одиночный символ
-* ноль или N предшествующих символов (N > 0)
-‘nocase|NC’ не учитывать регистр
-‘last|L’ последнее правило
-*/
-
-//Перекидываем php файлы в /var/www/html
-//----------------------------------------------
