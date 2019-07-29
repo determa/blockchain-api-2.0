@@ -40,7 +40,7 @@
 
 Данная функция отдаст результат с `txid` транзакции или вернет ошибку `Sending failed`
 ```php
-$result = payment($address,$amount,$fee)
+$result = payment($address,$amount,$fee);
 ```
 #### Проверка общего баланса всех кошельков
 Для получения общего баланса вместе с xpub кошельками, если они есть используйте функцию `checkAllBalance`
