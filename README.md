@@ -4,7 +4,7 @@
 
   * [Если сервер настроен](#Если-сервер-настроен)
   * [Настройка сервера](#Настройка-сервера)
-  * [API Documentation](#api-documentation)
+  * [Установка](#Установка)
   * [RPC API](#rpc)
   * [Installation](#installation)
   * [Troubleshooting](#troubleshooting)
@@ -14,42 +14,45 @@
 
 
 ## Если сервер настроен
-Пишем в консоль
+Для использования этого API вам нужно будет запустить локальную службу, которая будет отвечать за управление Blockchain кошельком. Приложение взаимодействует с этой службой локально через вызовы HTTP API.
+
+Для этого пишем в консоль
   1. screen -r blockchain-wallet
   2. blockchain-wallet-service start --port 3000
-и пользуемся
+копируем php файлы в папку сайта и пользуемся
+
 
 ## Настройка сервера
-##Установка
+Здесь будет описано как полностью установить и настроить сервер.
 
-//-------------------Установка apache----------------
+## Установка apache
+Пишем в консоли. Я использовал ubuntu для работы сервера.
+1. sudo apt update
+2. sudo apt upgrade
+3. sudo apt install apache2
 
-sudo apt update
-sudo apt upgrade
-sudo apt install apache2
+Добавление сервера в автозагрузку 
+1. sudo systemctl enable apache2
+2. sudo systemctl restart apache2
+3. sudo systemctl reload apache2
 
-/* Добавление сервера в автозагрузку */
-sudo systemctl enable apache2
-sudo systemctl restart apache2
-sudo systemctl reload apache2
+## Установка MySQL
+Устанавливаем MySQL.
+1. sudo apt install mysql-server
+2. sudo mysql_secure_installation
+3. mysql -u root -p
 
-//------------------------MySQL----------------------
+создаем бд `blockchain`
+* CREATE DATABASE `blockchain` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
 
-sudo apt install mysql-server
-//настройка
-sudo mysql_secure_installation
-mysql -u root -p
-password:
-
-//создаем бд `blockchain`
-CREATE DATABASE `blockchain` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
-
-use blockchain;
-GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
-exit;
-sudo apt install mysql-client
-reboot
+* use blockchain;
+Создаем нового пользователя
+* GRANT ALL ON *.* to YourName@'%' IDENTIFIED BY 'password';
+* FLUSH PRIVILEGES;
+* exit;
+4. sudo apt install mysql-client
+Перезагружаем сервер
+5. reboot
 
 //-----------------------php------------------------
 
