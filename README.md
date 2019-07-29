@@ -18,7 +18,7 @@
 
 Если вы не установили локальную службу blockchain, перейдите в [Установка Blockchain Wallet API](#Установка-Blockchain-Wallet-API)
 
-Для этого пишем в консоль
+Для запуска локальной службы пишем в консоль
   1. `$ screen -r blockchain-wallet`
   2. `$ blockchain-wallet-service start --port 3000`
 
