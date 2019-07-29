@@ -31,7 +31,7 @@
 2. sudo apt upgrade
 3. sudo apt install apache2
 
-Добавление сервера в автозагрузку 
+Добавление сервера в автозагрузку
 1. sudo systemctl enable apache2
 2. sudo systemctl restart apache2
 3. sudo systemctl reload apache2
