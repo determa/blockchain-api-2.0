@@ -7,8 +7,7 @@
 	$sql= "select * from `config`"; // форрмируем запрос к таблице
 	$res=mysqli_query($mysqli, $sql); //выполняем данный запрос
 	while($row=mysqli_fetch_assoc($res)){ //Сохраняем результат в переменные
-		$password = $row['firstpassword'];
-	    $xpub = $row['xpub'];
+		$password = $row['password'];
 	    $api_key = $row['api_key'];
 	    $guid = $row['guid']; 
 	}
@@ -23,7 +22,7 @@
 		//отправка запроса на blockchain и получение разультата
 		$response = file_get_contents($root_url . 'payment?' . $parameters); 
 		$object = json_decode($response); //преобразование данных в json
-		if($object->to) { /* Если адресс пришел возвращаем txid */
+		if($object->to) { // Если адресс пришел возвращаем txid 
 			if($object->success == 1) {
 				return $object->txid;
 			}
@@ -57,11 +56,11 @@
 		global $password, $root_url, $mysqli, $sql;
 		$parameters = 'password='.$password;
 		$response = file_get_contents($root_url . 'new_address?' . $parameters); 
-		$object = json_decode($response); //преобразование в json
-		if($object->address) { /* формируем запрос к таблице */
+		$object = json_decode($response); //преобразование из json
+		/*if($object->address) {  //формируем запрос к таблице 
 			$sql= "replace INTO address (`newAddress`, `id_user`) VALUES ('$object->address','$id')";
 			$result = mysqli_query($mysqli, $sql);
-		}
+		}*/
 		return $object->address;
 	}
 ?>
