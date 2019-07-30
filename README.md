@@ -149,6 +149,7 @@ CREATE TABLE `blockchain`.`config`  (
   `guid` varchar(255) NULL,
   `password` varchar(255) NULL,
   `api_key` varchar(255) NULL,
+   `callbackURL` varchar(255) NULL,
   PRIMARY KEY (`id`)
 );
 ```
