@@ -130,31 +130,11 @@ Cохраняем.
 
 Возможно таблицы будут меняться
 ```MySQL
-CREATE TABLE `blockchain`.`address`  (
-  `address_id` int(0) NOT NULL AUTO_INCREMENT,
-  `newAddress` varchar(255) NULL,
-  `id_user` int(0) NULL,
-  `secret` varchar(255) NULL,
-  PRIMARY KEY (`address_id`)
-);
 CREATE TABLE `blockchain`.`config`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `domen` varchar(255) NULL,
-  `port` int(5) NULL,
   `guid` varchar(255) NULL,
-  `firstpassword` varchar(255) NULL,
-  `xpub` varchar(255) NULL,
+  `password` varchar(255) NULL,
   `api_key` varchar(255) NULL,
   PRIMARY KEY (`id`)
-);
-CREATE TABLE `blockchain`.`callback`  (
-  `callback_id` int(0) NOT NULL AUTO_INCREMENT,
-  `transaction_hash` varchar(255) NULL,
-  `address` varchar(255) NULL,
-  `confirmations` varchar(255) NULL,
-	`value` varchar(255) NULL,
-  `invoice_id` varchar(255) NULL,
-  `id_user` varchar(255) NULL,
-  PRIMARY KEY (`callback_id`)
 );
 ```
