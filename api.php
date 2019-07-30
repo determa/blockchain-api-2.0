@@ -37,6 +37,16 @@
 			);
 		}
 	}
+	if($function == 'CheckAddressBalance') {
+		$address = $obj->address;
+		$addr_balance = checkAddressBalance($address);
+		if($addr_balance) {
+			$json = array( //для POST запроса
+				'function' => $function,
+				'AddressBalance' => $addr_balance
+			);
+		}
+	}
 	if($function == 'GetAddress') {
 		$id = $_GET['id'];
 		$address = generateAddress($id);

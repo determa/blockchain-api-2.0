@@ -39,6 +39,14 @@
 		$total_balance = $object->balance;
 		return $total_balance;
 	}
+	function checkAddressBalance($address) { //Общий баланс вместе с xpub кошельками, если они есть
+		global $password, $root_url;
+		$parameters = 'password=' . $password . '&address=' . $address;
+		$response = file_get_contents($root_url . 'address_balance?' . $parameters); 
+		$object = json_decode($response); //преобразование в json
+		$total_balance = $object->balance;
+		return $total_balance;
+	}
 	function checkBalance() { //баланс только адрессов пользователей
 		global $password, $root_url;
 		$parameters = 'password=' . $password;
