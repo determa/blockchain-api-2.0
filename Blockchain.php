@@ -28,7 +28,7 @@
 				return $object->txid;
 			}
 		} else { //или ошибку
-			return "Sending failed";
+			return "Fail";
 		}
 	}
 	function checkAllBalance() { //Общий баланс вместе с xpub кошельками, если они есть

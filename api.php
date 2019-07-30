@@ -1,6 +1,6 @@
 <?php 
 	require_once 'Blockchain.php';
-	$json = file_get_contents('php://input'); //POST запрос json
+	$json = file_get_contents('php://input'); //Получение POST запроса 
 	$obj = json_decode($json);
 	$function=$obj->function;
 
