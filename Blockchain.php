@@ -10,6 +10,7 @@
 		$password = $row['password'];
 	    $api_key = $row['api_key'];
 	    $guid = $row['guid']; 
+	    $callbackURL = $row['callbackURL']; 
 	}
 	$root_url = 'http://localhost:3000/merchant/'.$guid.'/';
 

@@ -47,25 +47,15 @@
 			);
 		}
 	}
-	if($json) { //POST запрос
+	if($json) { //POST запрос на указанный URL
 		$json_string= json_encode($json);
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, 'https://testpay.tk/action.php');
+		curl_setopt($curl, CURLOPT_URL, $callbackURL);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $json_string);
 		$out = curl_exec($curl);
 		curl_close($curl);
-		echo $out;
 	}
-
-	/*if($query) { GET запрос
-		$curl = curl_init();
-		//query = $function .'='. $address || balance ||.. после выполнения функции
-		curl_setopt($curl, CURLOPT_URL, 'https://testpay.tk/action.php?'.$query); //отправляет ссылкой на сервер
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$out = curl_exec($curl);
-		curl_close($curl);
-	}*/
 ?>
