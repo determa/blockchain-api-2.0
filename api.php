@@ -67,5 +67,6 @@
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $json_string);
 		$out = curl_exec($curl);
 		curl_close($curl);
+		echo $out;
 	}
 ?>

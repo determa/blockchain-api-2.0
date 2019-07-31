@@ -39,7 +39,7 @@
 		$total_balance = $object->balance;
 		return $total_balance;
 	}
-	function checkAddressBalance($address) { //Общий баланс вместе с xpub кошельками, если они есть
+	function checkAddressBalance($address) { //Баланс определенного адреса
 		global $password, $root_url;
 		$parameters = 'password=' . $password . '&address=' . $address;
 		$response = file_get_contents($root_url . 'address_balance?' . $parameters); 
