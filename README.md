@@ -145,13 +145,15 @@
 CREATE TABLE "public"."config" (
   "guid" varchar(50) NOT NULL,
   "password" varchar(100) NOT NULL,
-  "api_key" varchar(50) NOT NULL,
-  "callbackURL" varchar(255) NOT NULL
+  "api_key" varchar(50) NOT NULL
 )
 ;
 CREATE TABLE "public"."ApiKey" (
   "id" serial4,
-  "key" varchar(50) NOT NULL,
+  "user" varchar(50) NOT NULL,
+  "pass" varchar(50) NOT NULL,
+  "token" varchar(255) NOT NULL,
+  "secret" varchar(255) NOT NULL,
   PRIMARY KEY ("id")
 )
 ;
