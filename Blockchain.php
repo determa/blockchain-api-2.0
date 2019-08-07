@@ -1,6 +1,7 @@
 <?php  
-
-	//Подключение к БД
+	//Подключение к БД произойдет только при вызове функций через api
+	$connection = pg_connect ($connection_string) 
+	or die(header("HTTP/1.1 401 Unauthorized"));
 	$query = "select * from config";
     $result = pg_query($connection, $query);
     while($row=pg_fetch_assoc($result)){ //Сохраняем результат в переменные
@@ -9,7 +10,9 @@
 	    $guid = $row['guid']; 
 	    $callbackURL = $row['callbackURL']; 
 	}
+	pg_close($connection);
 	$root_url = 'http://localhost:3000/merchant/'.$guid.'/';
+	
 	function payment($address,$amount,$fee) { //Функция отправки платежа, нужно указать адресс, сумму и комсу
 		//для безопасности лучше еще использовать secret, который необходимо сравнить с бд
 		global $password, $root_url;
@@ -62,11 +65,10 @@
 		$parameters = 'password='.$password;
 		$response = file_get_contents($root_url . 'new_address?' . $parameters); 
 		$object = json_decode($response); //преобразование из json
-		/*if($object->address) {  //формируем запрос к таблице 
+		/*if($object->address) {  //формируем запрос к таблице MySQL
 			$sql= "replace INTO address (`newAddress`, `id_user`) VALUES ('$object->address','$id')";
 			$result = mysqli_query($mysqli, $sql);
 		}*/
 		return $object->address;
 	}
-	pg_close($connection);
 ?>
