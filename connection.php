@@ -1,11 +1,11 @@
 <?php  
 	
-	$host = "localhost";
-	$user = "jeka";
-	$pass = "PvL2O8WRD";
-	$db = "blockchain";
-	$port = "5432";
+	const host = "localhost";
+	const user = "jeka";
+	const pass = "PvL2O8WRD";
+	const db = "blockchain";
+	const port = "5432";
 
 	//Подключение к БД
-	$connection_string = 'host='.$host.' port='.$port.' dbname='.$db.' user='.$user.' password='.$pass;
+	$connection_string = 'host='.host.' port='.port.' dbname='.db.' user='.user.' password='.pass;
 ?>

@@ -4,33 +4,32 @@
 	$obj = json_decode($json_input); 
 	$user= $obj->user;
 	$pass= $obj->pass;
-
-	if($user!="" && $pass!=""){
-		$connection = pg_connect ($connection_string) 
-		or die(header("HTTP/1.1 500 Internal Server Error"));
-		$query = 'select * from "ApiKey" where "user" = '."'".$user."'".' and "pass" = ' . "'".$pass."'";
-	    $result = pg_query($connection, $query);
-	    while($row=pg_fetch_assoc($result)){ //Сохраняем результат в переменные
-			$username = $row['user'];
-		    $password = $row['pass'];
-		    $secret_key = $row['secret'];
-		}
-		pg_close($connection);
-	}
+	$match='/^[a-zA-Z0-9_-]{4,10}$/';
 	
-	if($username!="" && $password!="" && $user==$username && $password == $pass) {
-		$connection = pg_connect ($connection_string) 
-		or die(header("HTTP/1.1 500 Internal Server Error"));
-		$token = generate_token($username, $secret_key);
-		$query = 'UPDATE "ApiKey" set "token"= '."'".$token."'".' where "user" = ' . "'".$user."'".' and "pass" = ' . "'".$pass."'";
-		$result = pg_query($connection, $query);
-		pg_close($connection);
-		echo $token;
-	} else {
+	if($user=="" || $pass==""){
 		header("HTTP/1.1 401 Unauthorized");
 		exit();
 	}
 	
+	$username_valid = preg_match($match, $user) ? "true":"false";
+	$password_valid = preg_match($match, $pass) ? "true":"false";
+
+	if($username_valid !="true" || $password_valid !="true") {
+		die("Bad request");
+	}
+	
+	$connection = pg_connect ($connection_string) or die('Error connecting to DataBase');
+	$query = 'select * from "ApiKey" where "user" = '."'".$user."'".' and "pass" = ' . "'".$pass."' LIMIT 1";
+    $result = pg_query($connection, $query);
+    if(pg_num_rows($result) ==0){
+    	die("Unauthorized");
+    }
+	pg_close($connection);
+
+	require_once 'config.php';
+	$token = generate_token($username, secretWord);
+	echo $token;
+
 	function generate_token($username, $secret) {
 		$header = array(
 			"alg" => "HS256", 

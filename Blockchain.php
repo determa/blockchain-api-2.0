@@ -8,67 +8,78 @@
 		$password = $row['password'];
 	    $api_key = $row['api_key'];
 	    $guid = $row['guid']; 
-	    $callbackURL = $row['callbackURL']; 
 	}
 	pg_close($connection);
 	$root_url = 'http://localhost:3000/merchant/'.$guid.'/';
 	
+	function curl($func, $param) {
+		global $root_url;
+		$ch = curl_init($root_url . $func . $param);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return $response;
+	}
+
 	function payment($address,$amount,$fee) { //Функция отправки платежа, нужно указать адресс, сумму и комсу
 		//для безопасности лучше еще использовать secret, который необходимо сравнить с бд
-		global $password, $root_url;
+		global $password;
 		$parameters = 'password='.$password.'&to='.$address.'&amount='.$amount.'&fee='.$fee;
 		//отправка запроса на blockchain и получение разультата
-		$response = file_get_contents($root_url . 'payment?' . $parameters); 
+		$response = curl('payment?',$parameters);
 		$object = json_decode($response); //преобразование данных в json
-		if($object->to) { // Если адресс пришел возвращаем txid 
-			if($object->success == 1) {
-				return $object->txid;
+		if($object->error) {
+			return array("message" => $object->error);
+		} else {
+			if($object->to) { // Если адресс пришел возвращаем txid 
+				if($object->success == 1) {
+					return $object->txid;
+				} else {
+					return array("message" =>"success = false");
+				}
+			} else { //или ошибку
+				return array("message" =>"no address");
 			}
-		} else { //или ошибку
-			return "Fail";
 		}
 	}
 	function checkBalance() { //Общий баланс вместе с xpub кошельками, если они есть
-		global $password, $root_url;
+		global $password;
 		$parameters = 'password=' . $password;
-		$response = file_get_contents($root_url . 'balance?' . $parameters); 
+		$response = curl('balance?',$parameters);
 		$object = json_decode($response); //преобразование в json
 		$total_balance = $object->balance;
-		return $total_balance;
-	}
-	function checkAddressBalance($address) { //Баланс определенного адреса
-		global $password, $root_url;
-		$parameters = 'password=' . $password . '&address=' . $address;
-		$response = file_get_contents($root_url . 'address_balance?' . $parameters); 
-		$object = json_decode($response); //преобразование в json
-		$total_balance = $object->balance;
-		return $total_balance;
-	}
-/*	
-	function checkBalance() { //баланс только адрессов пользователей
-		global $password, $root_url;
-		$parameters = 'password=' . $password;
-		//отправка запроса на blockchain и получение разультата
-		$response = file_get_contents($root_url . 'list?' . $parameters); 
-		$object = json_decode($response); //преобразование в json
-
-		$countAddr = count($object->addresses); //количество адрессов
-		$total_balance = 0;
-		for ($i=0; $i < $countAddr; $i++) { //подсчет общего баланса
-			$total_balance += $object->addresses[$i]->balance;
+		if($object->error) {
+			return array("message" => $object->error);
+		} else {
+			if($total_balance ==null) $total_balance =0;
+			return $total_balance;
 		}
-		return $total_balance;
 	}
-*/
+
+	function checkAddressBalance($address) { //Баланс определенного адреса
+		global $password;
+		$parameters = 'password=' . $password . '&address=' . $address;
+		$response = curl('address_balance?',$parameters);
+		$object = json_decode($response); //преобразование в json
+		if($object->error) {
+			return array("message" => $object->error);
+		} else {
+			$total_balance = $object->balance;
+			if($total_balance ==null) $total_balance =0;
+			return $total_balance;
+		}
+	}
 	function generateAddress() { 
-		global $password, $root_url, $mysqli, $sql;
+		global $password;
 		$parameters = 'password='.$password;
-		$response = file_get_contents($root_url . 'new_address?' . $parameters); 
+		$response = curl('new_address?',$parameters);
 		$object = json_decode($response); //преобразование из json
-		/*if($object->address) {  //формируем запрос к таблице MySQL
-			$sql= "replace INTO address (`newAddress`, `id_user`) VALUES ('$object->address','$id')";
-			$result = mysqli_query($mysqli, $sql);
-		}*/
-		return $object->address;
+		if($object->error) {
+			return array("message" => $object->error);
+		} else {
+			return $object->address;
+		}
 	}
 ?>
