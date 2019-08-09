@@ -7,8 +7,8 @@
 	if($bearer_token) {
 		$parse_jwt_token = explode(' ', $bearer_token)[1]; //отделяем токен от слова bearer
 	} else {
-		header("HTTP/1.1 401 Unauthorized");
-		die("Bad request");
+		header("HTTP/1.1 400 Bad request");
+		exit;
 	}
 
 	$config = new ConfigClass();
@@ -47,7 +47,7 @@
 						$json['message'] = "function ".$function." did not work";
 					}
 				} else {
-					header("HTTP/1.1 401 Unauthorized");
+					header("HTTP/1.1 400 Bad request");
 					die("Bad request");
 				}
 	    		break;
@@ -105,6 +105,6 @@
 	}
 	else {
 		header("HTTP/1.1 401 Unauthorized");
-		die("Bad request");
+		exit;
 	}
 ?>
