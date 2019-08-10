@@ -115,11 +115,11 @@
 
 * `\q` - выход из psql
 
-Переходим в /usr/share/postgresql/10/pg_hba.conf и добавляем в конце 
+Переходим в /etc/postgresql/10/pg_hba.conf и добавляем в конце 
 
 `host    all         all             194.125.224.0/22            md5`
 
-затем в /usr/share/postgresql/10/postgresql.conf ищем `#listen_addresses = 'localhost'`, раскоментируем и вместо localhost пишем `listen_addresses = '*'`
+затем в /etc/postgresql/10/postgresql.conf ищем `#listen_addresses = 'localhost'`, раскоментируем и вместо localhost пишем `listen_addresses = '*'`
 
 4. `$ sudo apt-get install php-pgsql`
 5. `$ sudo apt-get install php-curl`
@@ -144,16 +144,13 @@
 ```PostgreSQL
 CREATE TABLE "public"."config" (
   "guid" varchar(50) NOT NULL,
-  "password" varchar(100) NOT NULL,
-  "api_key" varchar(50) NOT NULL
+  "password" varchar(100) NOT NULL
 )
 ;
 CREATE TABLE "public"."ApiKey" (
   "id" serial4,
   "user" varchar(50) NOT NULL,
   "pass" varchar(50) NOT NULL,
-  "token" varchar(255) NOT NULL,
-  "secret" varchar(255) NOT NULL,
   PRIMARY KEY ("id")
 )
 ;
