@@ -2,8 +2,20 @@
 	require_once 'config.php';
 	$json_input = file_get_contents('php://input'); //Получение POST запроса 
 	$obj = json_decode($json_input);
-	echo $_POST['function'];
-	$bearer_token = apache_request_headers()['Authorization']; //берем данные из header authorization
+
+	function getallheaders() { //функция получаения заголовков
+       $headers = array (); 
+       foreach ($_SERVER as $name => $value) 
+       { 
+           if (substr($name, 0, 5) == 'HTTP_') 
+           { 
+               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
+           } 
+       } 
+       return $headers; 
+    } 
+	
+	$bearer_token = getallheaders()['Authorization'];
 	if($bearer_token) {
 		$parse_jwt_token = explode(' ', $bearer_token)[1]; //отделяем токен от слова bearer
 	} else {
