@@ -3,17 +3,30 @@
 	$json_input = file_get_contents('php://input'); //Получение POST запроса 
 	$obj = json_decode($json_input);
 
-	function getallheaders() { //функция получаения заголовков
-       $headers = array (); 
-       foreach ($_SERVER as $name => $value) 
-       { 
-           if (substr($name, 0, 5) == 'HTTP_') 
-           { 
-               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value; 
-           } 
-       } 
-       return $headers; 
-    } 
+	function get_nginx_headers($function_name='getallheaders'){ //функция получения заголовков apache или nginx
+
+        $all_headers=array();
+
+        if(function_exists($function_name)){ 
+            $all_headers=$function_name();
+        } else {
+            foreach($_SERVER as $name => $value){
+                if(substr($name,0,5)=='HTTP_'){
+                    $name=substr($name,5);
+                    $name=str_replace('_',' ',$name);
+                    $name=strtolower($name);
+                    $name=ucwords($name);
+                    $name=str_replace(' ', '-', $name);
+                    $all_headers[$name] = $value; 
+                } else {
+                	if($function_name=='apache_request_headers'){
+                    	$all_headers[$name] = $value; 
+               		}
+               	}
+            }
+        }
+        return $all_headers;
+	}
 	
 	$bearer_token = getallheaders()['Authorization'];
 	if($bearer_token) {
